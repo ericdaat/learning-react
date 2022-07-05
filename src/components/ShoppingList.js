@@ -1,15 +1,31 @@
 import { plantList } from '../datas/plantList'
 import { Card, Row, Col, Button } from 'react-bootstrap'
 
-function PlantCard({ plant }) {
+
+function CareScale({ scaleValue, careType }) {
+    const range = [1, 2, 3]
+
+    const scaleType = careType === 'light' ? '☀️' : '💧'
+
+    return (
+        <div>
+            {range.map((rangeElem) => scaleValue >= rangeElem ? <span key={rangeElem.toString()}>{scaleType}</span> : null
+            )}
+        </div>
+    )
+}
+
+function ShoppingItem({ name, category, image, id, light, water }) {
     return (
         <Card>
-            <Card.Img variant="top" src={ plant.image } />
+            <Card.Img variant="top" src={ image } />
             <Card.Body>
-                <Card.Title>{ plant.name.toUpperCase() }</Card.Title>
+                <Card.Title>{ name.toUpperCase() }</Card.Title>
 
                 <Card.Text>
-                    { plant.category.toUpperCase() }
+                    { category.toUpperCase() }
+                    <CareScale careType='light' scaleValue={ light } />
+                    <CareScale careType='water' scaleValue={ water } />
                 </Card.Text>
 
                 <Button variant="primary">Add to cart</Button>
@@ -27,7 +43,14 @@ function ShoppingList() {
             <Row xs={1} md={4} className="g-4">
                 {plantList.map((plant) => (
                     <Col>
-                        <PlantCard plant={ plant } />
+                        <ShoppingItem
+                            name={ plant.name }
+                            category={plant.category}
+                            image={plant.image}
+                            id={plant.id}
+                            light={2}
+                            water={1}
+                        />
                     </Col>
                 ))}
             </Row>
